@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GYM Accessories </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #080000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #acf5c8;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #000000;
+    }
+
+    h2 {
+      color: #000000;
+    }
+
+    .menu-item {
+      margin-bottom: 15px;
+    }
+
+    .checkbox {
+      margin-right: 10px;
+    }
+
+    button {
+      background-color: #034814;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #06b80e;
+    }
+
+    #total {
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+
+    .heading {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #444;
+    }
+
+    .eq-container,
+    .Supplements-container,
+    .Accessories-container {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .eq-container label,
+    .Supplements-container label,
+    .Accessories-container label {
+      font-size: 1.1em;
+    }
+    .img{
+        height: 150px;
+        width: 180px;
+        margin-right: 2%;
+        border-radius: 20%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="color: red;">GYM Accessories </h1><hr>
+    <h2>Menu</h2>
+    <img src="bar.jpg" class="img">
+    <img src="sup.jfif" class="img">
+    <img src="st.jfif" class="img">
+    <div class="eq-container">
+      <h3 class="heading">Equipments</h3>
+      <div class="menu-item">
+        <input type="checkbox" id="Barbell" class="checkbox" data-price="4500.00">
+        <label for="Barbell">Barbell - ₹4500.00</label>
+        <input type="number" id="Barbell-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="Dumbell" class="checkbox" data-price="1000.50">
+        <label for="Dumbell">Dumbell - ₹1000.50</label>
+        <input type="number" id="Dumbell-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="Plates" class="checkbox" data-price="2550.50">
+        <label for="Plates">Plates - ₹2550.50</label>
+        <input type="number" id="Plates-quantity" class="quantity" value="1" min="1">
+      </div>
+    </div>
+    <div class="Supplements-container">
+      <h3 class="heading">Supplements</h3>
+      <div class="menu-item">
+        <input type="checkbox" id="creatine" class="checkbox" data-price="499.50">
+        <label for="creatine">Creatine - ₹499.50</label>
+        <input type="number" id="creatine-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="Whey-protein" class="checkbox" data-price="2500.00">
+        <label for="Whey-protein">Whey protein - ₹2500.00</label>
+        <input type="number" id="Whey-protein-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="pre" class="checkbox" data-price="450.50">
+        <label for="pre">Pre Workout - ₹450.50</label>
+        <input type="number" id="pre-quantity" class="quantity" value="1" min="1">
+      </div>
+    </div>
+    <div class="Accessories-container">
+      <h3 class="heading">Accessories</h3>
+      <div class="menu-item">
+        <input type="checkbox" id="Gloves" class="checkbox" data-price="50.50">
+        <label for="Gloves">Gloves - ₹50.50</label>
+        <input type="number" id="Gloves-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="Straps" class="checkbox" data-price="100.75">
+        <label for="Straps">Strap - ₹100.75</label>
+        <input type="number" id="Straps-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="Wrist Band" class="checkbox" data-price="200.50">
+        <label for="Wrist Band">Wrist Band - ₹200.50</label>
+        <input type="number" id="Wrist Band-quantity" class="quantity" value="1" min="1">
+      </div>
+    </div>
+    <button id="clear-order">Clear Order</button>
+    <button id="un">Unselect</button>
+    <button id="add-item">Add Item</button>
+    <button id="view-bill">View Bill</button>
+    <div id="total"></div>
+    <div id="selected-items"></div>
+  </div>
+
+  <script>
+    let bill = 0;
+    let selectedItems = [];
+
+    document.querySelectorAll('.checkbox').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        const price = parseFloat(this.dataset.price);
+        const quantity = parseInt(this.nextElementSibling.nextElementSibling.value); 
+        if (this.checked) {
+          bill += price * quantity;
+          selectedItems.push({ name: this.id, price: price, quantity: quantity });
+        } else {
+          bill -= price * quantity;
+          selectedItems = selectedItems.filter(item => item.name !== this.id);
+        }
+      });
+    });
+
+    document.getElementById('clear-order').addEventListener('click', function() {
+      document.querySelectorAll('.checkbox').forEach(function(checkbox) {
+        checkbox.checked = false;
+      });
+      document.querySelectorAll('.quantity').forEach(function(quantityInput) {
+        quantityInput.value = "1"; 
+      });
+      bill = 0;
+      selectedItems = [];
+      document.getElementById('total').innerText = "";
+      document.getElementById('selected-items').innerText = "";
+    });
+
+    document.getElementById('add-item').addEventListener('click', function() {
+      const selectedItem = document.querySelector('.menu-item input:checked');
+      if (selectedItem) {
+        const itemName = selectedItem.id;
+        const itemPrice = parseFloat(selectedItem.dataset.price);
+        const itemQuantity = parseInt(selectedItem.nextElementSibling.nextElementSibling.value);
+        bill += itemPrice * itemQuantity;
+        selectedItems.push({ name: itemName, price: itemPrice, quantity: itemQuantity });
+      } else {
+        alert("Please select an item to add.");
+      }
+    });
+
+    document.getElementById('view-bill').addEventListener('click', function() {
+      const totalElement = document.getElementById('total');
+      totalElement.innerHTML = `Total Bill: ₹${bill.toFixed(2)}`;
+      
+      const selectedItemsElement = document.getElementById('selected-items');
+      selectedItemsElement.innerHTML = "<h3>Selected Items</h3>";
+      selectedItems.forEach(function(item) {
+        selectedItemsElement.innerHTML += `<p>${item.name} - Quantity: ${item.quantity}, Price: ₹${(item.price * item.quantity).toFixed(2)}</p>`;
+      });
+    });
+
+    document.getElementById('un').addEventListener('click', function() {
+      document.querySelectorAll('.checkbox').forEach(function(checkbox) {
+        checkbox.checked = false;
+      });
+    });
+  </script>
+</body>
+</html>
